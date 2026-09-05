@@ -1,0 +1,1 @@
+tickers = ["HDFCBANK.NS", "ICICIBANK.NS", "^NSEBANK"]
