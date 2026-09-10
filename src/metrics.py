@@ -9,9 +9,9 @@ def cal_beta(stock: pd.Series, index: pd.Series) -> np.float64:
     return matrix[0, 1] / matrix[1, 1]
 
 
-def jensen_alpha(beta_ticker, market_return, rf: float = default_rf):
-    expected_return = rf + beta_ticker + (market_return - rf)
-    alpha = market_return - expected_return
+def jensen_alpha(beta_ticker, annual_returns, market_return, rf: float = default_rf):
+    expected_return = rf + beta_ticker * (market_return - rf)
+    alpha = annual_returns - expected_return
     return alpha
 
 

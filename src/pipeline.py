@@ -20,7 +20,9 @@ def run_pipeline(tickers: list[str] = config.tickers, rf: float = config.default
     market_return = annual_returns_a[config.index]
 
     alpha = {
-        ticker: metrics.jensen_alpha(beta[ticker], market_return)
+        ticker: metrics.jensen_alpha(
+            beta[ticker], annual_returns_a[ticker], market_return
+        )
         for ticker in tickers
         if ticker != config.index
     }

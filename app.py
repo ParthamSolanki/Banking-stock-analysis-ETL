@@ -82,25 +82,40 @@ with tab_2:
     st.pyplot(comp_fig)
 
     st.subheader("Risk-Adjusted Performance Summary")
+    col_1, col_2 = st.columns([1.2, 1])
+
+    with col_1:
+        sharpe_df = data["sharpe"].style.format(
+            {
+                "Annual Returns": "{:.2%}",
+                "Annualized Volatility": "{:.2%}",
+                "Sharpe Ratio": "{:.2f}",
+            }
+        )
+        st.dataframe(sharpe_df, width="stretch")
+
+    with col_2:
+        sharpe_fig = plots.sharpe_data(data["sharpe"])
+        st.pyplot(sharpe_fig)
 
     st.subheader("Automated Investment Takeaway")
     best_sharpe_ticker = data["sharpe"]["Sharpe Ratio"].idxmax()
-    best_alpha_ticker = data["alpha"].idxmax()
+    best_alpha_ticker = max(data["alpha"], key=data["alpha"].get)
 
     best_sharpe_val = data["sharpe"]["Sharpe Ratio"].loc[best_sharpe_ticker]
-    best_alpha_val = data["alpha"].loc[best_alpha_ticker]
+    best_alpha_val = data["alpha"][best_alpha_ticker]
 
     if best_sharpe_ticker == best_alpha_ticker:
         st.success(
-            f"**Top Overall Pick: {best_sharpe_ticker}**\n\n"
-            f"Demonstrates superior overall efficiency, generating both the highest "
+            f"**Top Pick -> {best_sharpe_ticker}**\n\n"
+            f"Demonstrates better overall efficiency, generating both the highest "
             f"Sharpe Ratio (**{best_sharpe_val:.2f}**) and highest excess return (**{best_alpha_val:.2%}** Alpha)."
         )
     else:
         st.info(
             f"**Strategic Trade-Off:**\n\n"
-            f"* **Best Risk-Adjusted Stability:** **{best_sharpe_ticker}** (Sharpe Ratio: **{best_sharpe_val:.2f}**)\n"
-            f"* **Highest Excess Return (Alpha):** **{best_alpha_ticker}** (Alpha: **{best_alpha_val:.2%}**)"
+            f"**Best Risk-Adjusted Stability -> {best_sharpe_ticker}** (Sharpe Ratio: **{best_sharpe_val:.2f}**)\n"
+            f"**Highest Excess Return (Alpha) -> {best_alpha_ticker}** (Alpha: **{best_alpha_val:.2%}**)"
         )
 
 with tab_3:

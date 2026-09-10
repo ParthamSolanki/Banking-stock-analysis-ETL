@@ -1,5 +1,0 @@
-# Dependencies
-
-- pathlib
-- pandas
-- yfinance

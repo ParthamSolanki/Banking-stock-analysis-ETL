@@ -106,7 +106,7 @@ def sharpe_data(results: pd.DataFrame):
             ax=ax,
         )
         ticker_list = " vs ".join(
-            [ticker.replace(".NS", "").replace("^", "") for ticker in returns.index]
+            [ticker.replace(".NS", "").replace("^", "") for ticker in results.index]
         )
         ax.set_title(f"Sharpe Ratio: {ticker_list}", fontsize=17)
         ax.set_ylabel("Sharpe Ratio")
