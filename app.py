@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import streamlit as st
 
 from src import config, pipeline, plots
@@ -5,7 +7,7 @@ from src import config, pipeline, plots
 
 @st.cache_data
 def load_pipeline_data(rf_rate: float):
-    return pipeline.run_pipeline(rf=rf_rate)
+    return pipeline.run_pipeline(rf_rate=rf_rate)
 
 
 st.set_page_config(
@@ -37,6 +39,14 @@ long_ma = st.sidebar.slider("Long Moving Average", 20, 200, 50)
 bank_tickers = [t for t in config.tickers if t != config.index]
 select_ticker = st.sidebar.selectbox("Select bank for Inspection", bank_tickers)
 
+if st.sidebar.button("🔄 Refresh Market Data"):
+    parquet_file = Path(config.parquet_path)
+    if parquet_file.exists():
+        parquet_file.unlink()
+    st.cache_data.clear()
+    st.sidebar.success("Cache cleared! Fetching fresh data...")
+    st.rerun()
+
 data = load_pipeline_data(rf_rate=rf_rate)
 
 select_clean = select_ticker.replace(".NS", "")
@@ -62,24 +72,24 @@ with tab_1:
         ticker_ohlc, select_ticker, short_ma, long_ma
     )
 
-    st.plotly_chart(candlestick_fig, width="stretch", config=plt_config)
+    st.plotly_chart(candlestick_fig, width="stretch", config=plt_config, theme=None)
 
     st.subheader(
         body=f"Sensitivity with respect to {config.index.replace('^', '')} (Beta)"
     )
     beta_fig = plots.beta_plot(config.index, select_ticker, data["pct_change"])
-    st.pyplot(beta_fig)
+    st.pyplot(beta_fig, clear_figure=True)
 
     st.subheader(body=f"Relative Strength Index (RSI) of {select_clean}")
     rsi_fig = plots.rsi(select_ticker, data["rsi"])
-    st.pyplot(fig=rsi_fig)
+    st.pyplot(fig=rsi_fig, clear_figure=True)
 
 with tab_2:
     st.header("Comparative Analysis & Allocation Verdict")
 
     st.subheader("Performance Comparison (Base ₹100)")
     comp_fig = plots.comparison(data["pct_change"])
-    st.pyplot(comp_fig)
+    st.pyplot(comp_fig, clear_figure=True)
 
     st.subheader("Risk-Adjusted Performance Summary")
     col_1, col_2 = st.columns([1.2, 1])
@@ -96,7 +106,7 @@ with tab_2:
 
     with col_2:
         sharpe_fig = plots.sharpe_data(data["sharpe"])
-        st.pyplot(sharpe_fig)
+        st.pyplot(sharpe_fig, clear_figure=True)
 
     st.subheader("Automated Investment Takeaway")
     best_sharpe_ticker = data["sharpe"]["Sharpe Ratio"].idxmax()
@@ -124,10 +134,10 @@ with tab_3:
     candlestick_fig = plots.plot_candlestick_ma(
         ticker_ohlc, config.index, short_ma, long_ma
     )
-    st.plotly_chart(candlestick_fig, width="stretch", config=plt_config)
+    st.plotly_chart(candlestick_fig, width="stretch", config=plt_config, theme=None)
 
     st.subheader(
         body=f"Relative Strength Index (RSI) of {config.index.replace('^', '')}"
     )
     rsi_fig = plots.rsi(config.index, data["rsi"])
-    st.pyplot(fig=rsi_fig)
+    st.pyplot(fig=rsi_fig, clear_figure=True)
