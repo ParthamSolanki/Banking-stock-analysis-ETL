@@ -78,7 +78,9 @@ with tab_1:
         body=f"Sensitivity with respect to {config.index.replace('^', '')} (Beta)"
     )
     beta_fig = plots.beta_plot(config.index, select_ticker, data["pct_change"])
-    st.pyplot(beta_fig, clear_figure=True)
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.pyplot(beta_fig, clear_figure=True)
 
     st.subheader(body=f"Relative Strength Index (RSI) of {select_clean}")
     rsi_fig = plots.rsi(select_ticker, data["rsi"])

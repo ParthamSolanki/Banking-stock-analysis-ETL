@@ -21,16 +21,13 @@ def plot_candlestick_ma(
         ]
     )
     fig.update_layout(
-        xaxis_rangeslider_visible=False,
+        xaxis_rangeslider_visible=False,  # to remove slider as zooming in using mouse works even better
         title_text=ticker,
         margin=dict(l=10, r=10, t=40, b=10),
     )
-    # Rangleslider = False as other wise it shows a range slider below the viz which is redundant
     ma_short = ticker_df["Close"].rolling(window=short_ma).mean()
     ma_long = ticker_df["Close"].rolling(window=long_ma).mean()
-    # rolling makes it so that the mean does the operation for 20 entries, which are 20 trading days worth of data.
 
-    # Adding the moving averages, go to the examples section for individual elements in the documentation.
     fig.add_trace(
         plotly.Scatter(
             x=ticker_df.index,
