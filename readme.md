@@ -2,12 +2,7 @@
 <h1 align='center'>
 📈 Banking sector stock analysis
 </h1>
-<p>
 <a href="https://banking-stock-analysis-etl.streamlit.app/">🌐 Interactive App / Live Demo</a>
-</p>
-<video src="data/demo.mp4" controls width="100%" muted loop poster="">
-Your browser does not support inline video.<br><a href="data/demo.mp4">Click here to watch or download the demo video directly.</a>
-</video>
 </div>
 
 ---
