@@ -7,9 +7,11 @@
 
 ---
 
+https://github.com/user-attachments/assets/ef665e12-eeb0-4fb1-8c5d-d07c8d092959
+
 ## Visualizations & insights
 
-### Performance comparison (How 100 INR grows for each ticker)
+### Performance comparison (How 100 INR grew for each ticker)
 
 ![Stock performance](data/alpha.svg)
 
